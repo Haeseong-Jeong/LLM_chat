@@ -1,5 +1,12 @@
+pandas
 requests
 fastapi
 uvicorn
 openai
 python-dotenv
+langchain_community
+langchain_huggingface
+langchain_ollama
+python-multipart
+sentence-transformers
+faiss-cpu
