@@ -8,6 +8,8 @@ function App() {
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [dataframe, setDataframe] = useState([]);
+
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -40,7 +42,12 @@ function App() {
     setLoading(true);
     try {
       const res = await axios.post("http://localhost:8000/ask/", formData);
-      setAnswer(res.data.answer);
+      setAnswer(res.data.answer || res.data.summary);  // answer fallback
+
+      // 데이터프레임 데이터 안전하게 설정
+      const dfData = res.data.dataframe || [];
+      console.log("받은 dataframe:", dfData); // 디버깅용
+      setDataframe(Array.isArray(dfData) ? dfData : []);
     } catch (err) {
       console.error(err);
       alert("질문 실패: 먼저 문서를 업로드했는지 확인해주세요.");
@@ -86,6 +93,32 @@ function App() {
           <pre>{answer}</pre>
         </div>
       )}
+
+
+      {dataframe.length > 0 && dataframe[0] && Object.keys(dataframe[0]).length > 0 && (
+        <div style={{ marginTop: 20 }}>
+          <h3>📊 수치 데이터 테이블</h3>
+          <table border="1" cellPadding="8" cellSpacing="0" style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                {Object.keys(dataframe[0]).map((key) => (
+                  <th key={key}>{key}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {dataframe.map((row, i) => (
+                <tr key={i}>
+                  {Object.values(row).map((val, j) => (
+                    <td key={j}>{val}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
     </div>
   );
 }

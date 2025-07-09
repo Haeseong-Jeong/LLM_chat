@@ -1,4 +1,5 @@
 pandas
+openpyxl
 requests
 fastapi
 uvicorn
@@ -10,3 +11,4 @@ langchain_ollama
 python-multipart
 sentence-transformers
 faiss-cpu
+langgraph
