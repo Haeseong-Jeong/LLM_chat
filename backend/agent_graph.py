@@ -17,36 +17,9 @@ class AgentState(dict):
 def select_tool(state):
     return {"tool_input": state["question"]}
 
-# Tool 실행 노드
-# def run_tool(state):
-#     for tool in TOOLS:
-#         if tool.name in state["question"]:
-#             result = tool.func(state["question"])
-#             return {"observation": result}
-#     # fallback
-#     return {"observation": TOOLS[-1].func(state["question"])}
-
-# Tool 실행 노드
-# def run_tool(state):
-#     # tools.py에서 TOOLS import (circular import 방지)
-#     from tools import TOOLS
-    
-#     question = state["question"].lower()
-    
-#     # 키워드 기반 tool 선택
-#     if any(keyword in question for keyword in ["요약", "정리", "요약해"]):
-#         result = TOOLS[0].func(state["question"])  # summarize_tool
-#     elif any(keyword in question for keyword in ["수치", "숫자", "데이터", "통계"]):
-#         result = TOOLS[1].invoke(state["question"])  # numerical_tool
-#     elif any(keyword in question for keyword in ["검색", "찾아", "찾기"]):
-#         result = TOOLS[2].func(state["question"])  # search_documents_tool
-#     else:
-#         result = TOOLS[3].func(state["question"])  # default_tool
-#     return {"observation": result}
-
 KEYWORD_TOOL_MAP = {
     ("요약", "정리", "요약해"): "summarize",
-    ("수치", "숫자", "데이터", "통계"): "numerical",
+    ("시각화"): "visualization",
     ("검색", "찾아", "찾기"): "search_documents"
 }
 
@@ -59,7 +32,6 @@ def run_tool(state):
             return {"observation": TOOLS[tool_name].func(state["question"])}
 
     return {"observation": TOOLS["default"].func(state["question"])}
-
 
 
 # Final Answer 요약 노드

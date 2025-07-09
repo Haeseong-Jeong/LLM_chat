@@ -42,12 +42,6 @@ class DocumentProcessor:
                 return self._load_csv(file_path)
             elif file_extension == '.xlsx':
                 return self._load_excel(file_path)
-            # elif file_extension == '.pdf':
-            #     return self._load_pdf(file_path)
-            # elif file_extension == '.txt':
-            #     return self._load_text(file_path)
-            # elif file_extension == '.docx':
-            #     return self._load_docx(file_path)
 
             else:
                 raise ValueError(f"지원하지 않는 파일 형식: {file_extension}")
@@ -69,15 +63,6 @@ class DocumentProcessor:
         df = pd.read_excel(file_path)
         content = df.to_string(index=False)
         return [Document(page_content=content, metadata={"source": file_path})]
-
-    # def _load_pdf(self, file_path: str) -> List[Document]:
-    #     return PyPDFLoader(file_path).load()
-
-    # def _load_text(self, file_path: str) -> List[Document]:
-    #     return TextLoader(file_path, encoding='utf-8').load()
-
-    # def _load_docx(self, file_path: str) -> List[Document]:
-    #     return Docx2txtLoader(file_path).load()
 
     def build_vector_store(self, documents: List[Document]) -> None:
         vectorstore = FAISS.from_documents(documents, self.embeddings)

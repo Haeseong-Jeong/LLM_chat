@@ -50,18 +50,6 @@ class InOutAnalyzer:
             print("출고 데이터가 없습니다.")
 
 
-    def numerical_data(self) -> Optional[pd.DataFrame]:
-        # CSV 파일 불러오기 (파일 경로는 실제 파일에 맞게 수정하세요)
-        #file_path = UPLOAD_DIR
-        df = pd.read_csv(self.folder_path + '/한국중부발전(주)_BC유 재고 현황_20240816.csv', encoding='cp949')
-
-        # 수치 데이터만 추출 (숫자형 컬럼만 선택)
-        numeric_df = df.select_dtypes(include=['number'])
-
-        return numeric_df
-
-
-
     def get_daily_summary(self) -> Optional[pd.DataFrame]:
         if self.inbound_df is None or self.outbound_df is None:
             print("먼저 load_all_data()를 실행하세요.")
@@ -78,6 +66,7 @@ class InOutAnalyzer:
         summary = pd.merge(inbound_summary, outbound_summary, on='Date', how='outer').fillna(0)
         summary['입출고차이'] = summary['입고량'] - summary['출고량']
         return summary.sort_values(by='Date')
+
 
 
 if __name__ == '__main__':
