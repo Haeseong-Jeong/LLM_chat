@@ -1,70 +1,126 @@
-# Getting Started with Create React App
+# 📊 문서 기반 Q&A + 시각화 웹 서비스 (LLM + RAG + Chart.js)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+이 프로젝트는 PDF/문서 기반 데이터를 업로드하고,  
+LLM 기반 자연어 질의 응답 + 표 + 차트 시각화를 동시에 제공하는 인터랙티브 대시보드입니다.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🧠 작동 방식
 
-### `npm start`
+1. 사용자가 문서를 업로드하면 Vectorstore로 임베딩
+2. 사용자가 질문하면:
+   - 관련 문서 context를 검색 (RAG)
+   - LLM이 응답 생성
+3. 시각화 요청 경우:
+   - 📋 표로 출력  
+   - 📈 Chart.js로 시각화
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## ⚙️ 실행 방법
 
-### `npm test`
+### 1. 저장소 클론
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. 가상환경 생성 및 활성화
 
-### `npm run build`
+```bash
+python -m venv venv
+source venv/bin/activate        # macOS / Linux
+venv\Scripts\activate           # Windows
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 3. 의존성 설치
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+pip install -r requirements.txt
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 4. 프론트엔드 의존성 설치
 
-### `npm run eject`
+```bash
+cd frontend
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🚀 실행 방법
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 1. Ollama 설치 및 모델 실행
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- [Ollama 설치](https://ollama.com/)
+- LLaMA3 모델 다운로드 및 실행:
 
-## Learn More
+```bash
+ollama run llama3
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+> 또는 필요시: `ollama pull llama3`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+### 2. FastAPI 서버 실행
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+루트 디렉토리에서:
 
-### Analyzing the Bundle Size
+```bash
+uvicorn main:app --reload
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+→ 백엔드 서버가 `http://localhost:8000`에서 실행됩니다.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 3. React 프론트엔드 실행
 
-### Advanced Configuration
+```bash
+cd frontend
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+→ 프론트 서버가 `http://localhost:3000`에서 실행됩니다.
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 📦 주요 기술 스택
 
-### `npm run build` fails to minify
+- 📚 LangChain + Ollama + LLaMA3 (LLM)
+- 🧠 FAISS (Vectorstore)
+- 🖼️ React + Chart.js (프론트 시각화)
+- 🐍 FastAPI (백엔드 API)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## ✅ 기능 요약
+
+- 문서 업로드 + 벡터 저장
+- 자연어 질의 응답 (RAG 기반)
+- 표 + 차트 자동 시각화
+
+---
+
+## 🗂️ 폴더 구조 예시
+
+```
+.
+├── main.py             # FastAPI entry
+├── tools.py            # LangChain tool 정의
+├── agent_graph.py      # Agent + Graph 정의
+├── analyzer.py         # 데이터 가공
+├── document_processor.py
+├── config.py
+├── frontend/           # React 프론트엔드
+│   ├── App.js
+│   └── components/
+│       └── ChartBox.jsx
+```
+
+---
+
+## 🙋 사용 시 주의
+
+- Ollama가 반드시 켜져 있어야 LLM 응답이 동작합니다.
+- 문서를 업로드하지 않으면 질문 시 벡터스토어 오류가 발생할 수 있습니다.
+
+---
+
