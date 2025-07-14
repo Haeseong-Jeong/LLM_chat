@@ -33,6 +33,14 @@ class DocumentProcessor:
             encode_kwargs={'normalize_embeddings': True}
         )
 
+    def get_total_docs_num(self, directory_path):
+        try:
+            files = [f for f in os.listdir(directory_path) if os.path.isfile(os.path.join(directory_path, f))]
+            return len(files)
+        except Exception as e:
+            print(f"디렉토리 파일 개수 세는 중 에러: {e}")
+            return 0
+
 
     def load_documents(self, file_path: str) -> List[Document]:
         try:

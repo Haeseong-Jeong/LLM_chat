@@ -86,8 +86,10 @@ def summarize_tool(question: str) -> str:
     
     답변:
     """
-    
-    return query_with_context(question, prompt_template, k=3)
+    #processor = DocumentProcessor(db_dir=VECTOR_DB_DIR)
+    #vectorstore = processor.load_vector_store()
+    processor = DocumentProcessor()
+    return query_with_context(question, prompt_template, k=processor.get_total_docs_num(UPLOAD_DIR))
 
 @tool
 def search_documents_tool(query: str) -> str:
